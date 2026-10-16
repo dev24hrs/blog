@@ -1,0 +1,28 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro"
+import Timeline from "@/components/Timeline.astro"
+import SiteHeader from "@/components/site-header.astro"
+import { Footer } from "@/components/footer"
+import { getSortedPosts } from "@/lib/posts"
+
+const title = "文章归档 | dev24hrs Notes"
+const description = "全部文章时间线"
+const posts = await getSortedPosts(true)
+
+// 转换为时间线所需的简化数据
+const timelineItems = posts.map((post) => ({
+  slug: post.id,
+  title: post.data.title,
+  date: post.data.published.toISOString().slice(0, 10),
+}))
+---
+
+<BaseLayout {title} {description} fontProfile="interface">
+  <div class="min-h-screen flex flex-col bg-surface-subtle">
+    <SiteHeader />
+    <main class="flex-1 pt-24">
+      <Timeline items={timelineItems} />
+    </main>
+    <Footer />
+  </div>
+</BaseLayout>

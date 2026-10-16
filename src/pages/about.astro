@@ -1,0 +1,17 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro"
+import AboutPage from "@/components/pages/AboutPage"
+import { Footer } from "@/components/footer"
+import SiteHeader from "@/components/site-header.astro"
+
+const title = "关于 | dev24hrs Notes"
+const description = "test"
+---
+
+<BaseLayout {title} {description} fontProfile="interface">
+  <div class="min-h-screen flex flex-col bg-surface-subtle">
+    <SiteHeader />
+    <AboutPage client:load />
+    <Footer />
+  </div>
+</BaseLayout>

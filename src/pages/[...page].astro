@@ -1,0 +1,44 @@
+---
+import type { GetStaticPaths } from "astro"
+import BaseLayout from "@/layouts/BaseLayout.astro"
+import { ArticleList } from "@/components/article-list"
+import { Footer } from "@/components/footer"
+import SiteHeader from "@/components/site-header.astro"
+import { PAGE_SIZE } from "@/lib/constants"
+import { buildSidebarMeta, getSortedPosts, toPostMeta } from "@/lib/posts"
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const posts = await getSortedPosts()
+  const articles = posts.map((post) => toPostMeta(post))
+  const pages = paginate(articles, { pageSize: PAGE_SIZE })
+  return pages.filter(({ props }) => props.page.currentPage > 1)
+}) satisfies GetStaticPaths
+
+const { page } = Astro.props
+const currentPage = page.currentPage
+const allPosts = await getSortedPosts()
+const allArticles = allPosts.map((post) => toPostMeta(post))
+const sidebarMeta = buildSidebarMeta(allArticles)
+const title =
+  currentPage > 1
+    ? `dev24hrs Notes · 第 ${currentPage} 页`
+    : "dev24hrs Notes"
+---
+
+<BaseLayout {title} fontProfile="interface">
+  <div class="min-h-screen flex flex-col bg-surface-subtle">
+    <SiteHeader />
+    <main class="flex-1 pt-24">
+      <section id="home-main" class="scroll-mt-24">
+        <ArticleList
+          client:visible
+          articles={allArticles}
+          pagination={{ currentPage, pageSize: PAGE_SIZE, basePath: "/" }}
+          sidebarCategories={sidebarMeta.categories}
+          sidebarTags={sidebarMeta.tags}
+        />
+      </section>
+    </main>
+    <Footer />
+  </div>
+</BaseLayout>
