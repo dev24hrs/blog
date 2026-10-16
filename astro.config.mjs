@@ -1,40 +1,42 @@
-import { defineConfig } from "astro/config"
-import { unified } from "@astrojs/markdown-remark"
-import tailwindcss from "@tailwindcss/vite"
-import react from "@astrojs/react"
-import sitemap from "@astrojs/sitemap"
-import mdx from "@astrojs/mdx"
-import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections"
-import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers"
-import expressiveCode from "astro-expressive-code"
-import rehypeAutolinkHeadings from "rehype-autolink-headings"
-import rehypeComponents from "rehype-components"
-import rehypeKatex from "rehype-katex"
-import rehypeSlug from "rehype-slug"
-import remarkDirective from "remark-directive"
-import remarkGithubAdmonitionsToDirectives from "remark-github-admonitions-to-directives"
-import remarkMath from "remark-math"
-import remarkSectionize from "remark-sectionize"
-import { remarkShiftHeadings } from "./src/plugins/remark-shift-headings.mjs"
-import { AdmonitionComponent } from "./src/plugins/rehype-component-admonition.mjs"
-import { GithubCardComponent } from "./src/plugins/rehype-component-github-card.mjs"
-import { parseDirectiveNode } from "./src/plugins/remark-directive-rehype.js"
-import { remarkExcerpt } from "./src/plugins/remark-excerpt.js"
-import { remarkReadingTime } from "./src/plugins/remark-reading-time.mjs"
-import { pluginLanguageBadge } from "./src/plugins/expressive-code/language-badge"
-import { pluginCustomCopyButton } from "./src/plugins/expressive-code/custom-copy-button"
+import { defineConfig } from "astro/config";
+import { unified } from "@astrojs/markdown-remark";
+import tailwindcss from "@tailwindcss/vite";
+import react from "@astrojs/react";
+import sitemap from "@astrojs/sitemap";
+import mdx from "@astrojs/mdx";
+import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
+import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
+import expressiveCode from "astro-expressive-code";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypeComponents from "rehype-components";
+import rehypeKatex from "rehype-katex";
+import rehypeSlug from "rehype-slug";
+import remarkDirective from "remark-directive";
+import remarkGithubAdmonitionsToDirectives from "remark-github-admonitions-to-directives";
+import remarkMath from "remark-math";
+import remarkSectionize from "remark-sectionize";
+import { remarkShiftHeadings } from "./src/plugins/remark-shift-headings.mjs";
+import { AdmonitionComponent } from "./src/plugins/rehype-component-admonition.mjs";
+import { GithubCardComponent } from "./src/plugins/rehype-component-github-card.mjs";
+import { parseDirectiveNode } from "./src/plugins/remark-directive-rehype.js";
+import { remarkExcerpt } from "./src/plugins/remark-excerpt.js";
+import { remarkReadingTime } from "./src/plugins/remark-reading-time.mjs";
+import { pluginLanguageBadge } from "./src/plugins/expressive-code/language-badge";
+import { pluginCustomCopyButton } from "./src/plugins/expressive-code/custom-copy-button";
 
-const createAdmonitionComponent = (type) => (properties = {}, children = []) => {
-  const normalizedChildren = Array.isArray(children) ? children : []
-  return AdmonitionComponent(properties, normalizedChildren, type)
-}
+const createAdmonitionComponent =
+  (type) =>
+  (properties = {}, children = []) => {
+    const normalizedChildren = Array.isArray(children) ? children : [];
+    return AdmonitionComponent(properties, normalizedChildren, type);
+  };
 
 export default defineConfig({
   srcDir: "./src",
   output: "static",
   // v7 默认值从 true 改成 'jsx'，会吃掉行内元素之间的空格。保持旧行为。
   compressHTML: true,
-  site: "https://www.lapis.cafe",
+  site: "https://www.dev24hrs.top",
   trailingSlash: "always",
   alias: {
     "@": "./src",
@@ -47,8 +49,8 @@ export default defineConfig({
       themes: ["github-dark", "github-light"],
       themeCssSelector: (theme) => {
         // 根据主题名称返回对应的 CSS 选择器
-        if (theme.name === "github-light") return ":root:not(.dark)"
-        return ".dark"
+        if (theme.name === "github-light") return ":root:not(.dark)";
+        return ".dark";
       },
       plugins: [
         pluginCollapsibleSections(),
@@ -69,7 +71,8 @@ export default defineConfig({
         borderRadius: "0.75rem",
         borderColor: "transparent",
         codeFontSize: "0.875rem",
-        codeFontFamily: "var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+        codeFontFamily:
+          "var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
         codeLineHeight: "1.625",
         frames: {
           editorBackground: "var(--codeblock-bg)",
@@ -146,4 +149,4 @@ export default defineConfig({
       ],
     ],
   },
-})
+});

@@ -1,0 +1,14 @@
+// Cloudflare Workers 静态资源部署配置。
+// 构建产物由 `pnpm build`（astro build + pagefind --site dist）生成到 dist/，
+// 该目录在 .gitignore 中，因此必须在构建侧生成，不要提交到仓库。
+{
+  "name": "lapis-cafe-blog",
+  // 静态站点不依赖运行时行为，日期取构建时的当月。
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    // src/pages/ 下没有 404 页面，dist/ 里也没有 404.html，
+    // 所以用默认未匹配行为，而不是 "404-page"。
+    "not_found_handling": "none"
+  }
+}

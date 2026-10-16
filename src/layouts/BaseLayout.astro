@@ -76,7 +76,6 @@ const resolvedTwitterDescription = twitterDescription || description
     <meta name="twitter:description" content={resolvedTwitterDescription} />
     {resolvedOgImage ? <meta name="twitter:image" content={resolvedOgImage} /> : null}
     <slot name="head" />
-    <link rel="alternate" type="application/rss+xml" title="dev24hrs Notes" href="/rss.xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     {useHarmonySans ? <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin /> : null}
