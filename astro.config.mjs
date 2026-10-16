@@ -97,56 +97,57 @@ export default defineConfig({
   // v7 默认把 markdown 管线换成了 Sätteri。本站有 11 个 remark/rehype 插件
   // （含 src/plugins/ 下 6 个自研的）+ KaTeX，暂不 port，显式留在 unified 上。
   markdown: {
-    processor: unified(),
-    remarkPlugins: [
-      remarkMath,
-      remarkReadingTime,
-      remarkExcerpt,
-      remarkShiftHeadings,
-      remarkGithubAdmonitionsToDirectives,
-      remarkDirective,
-      remarkSectionize,
-      parseDirectiveNode,
-    ],
-    rehypePlugins: [
-      rehypeKatex,
-      rehypeSlug,
-      [
-        rehypeComponents,
-        {
-          components: {
-            github: GithubCardComponent,
-            note: createAdmonitionComponent("note"),
-            tip: createAdmonitionComponent("tip"),
-            important: createAdmonitionComponent("important"),
-            caution: createAdmonitionComponent("caution"),
-            warning: createAdmonitionComponent("warning"),
-          },
-        },
+    processor: unified({
+      remarkPlugins: [
+        remarkMath,
+        remarkReadingTime,
+        remarkExcerpt,
+        remarkShiftHeadings,
+        remarkGithubAdmonitionsToDirectives,
+        remarkDirective,
+        remarkSectionize,
+        parseDirectiveNode,
       ],
-      [
-        rehypeAutolinkHeadings,
-        {
-          behavior: "append",
-          properties: {
-            className: ["anchor"],
-          },
-          content: {
-            type: "element",
-            tagName: "span",
-            properties: {
-              className: ["anchor-icon"],
-              "data-pagefind-ignore": true,
+      rehypePlugins: [
+        rehypeKatex,
+        rehypeSlug,
+        [
+          rehypeComponents,
+          {
+            components: {
+              github: GithubCardComponent,
+              note: createAdmonitionComponent("note"),
+              tip: createAdmonitionComponent("tip"),
+              important: createAdmonitionComponent("important"),
+              caution: createAdmonitionComponent("caution"),
+              warning: createAdmonitionComponent("warning"),
             },
-            children: [
-              {
-                type: "text",
-                value: "#",
-              },
-            ],
           },
-        },
+        ],
+        [
+          rehypeAutolinkHeadings,
+          {
+            behavior: "append",
+            properties: {
+              className: ["anchor"],
+            },
+            content: {
+              type: "element",
+              tagName: "span",
+              properties: {
+                className: ["anchor-icon"],
+                "data-pagefind-ignore": true,
+              },
+              children: [
+                {
+                  type: "text",
+                  value: "#",
+                },
+              ],
+            },
+          },
+        ],
       ],
-    ],
+    }),
   },
 });
