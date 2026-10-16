@@ -33,7 +33,7 @@
   --status-positive-bg: oklch(0.93 0.04 155);
   --status-positive-fg: oklch(0.42 0.12 155);
   --status-neutral-bg: oklch(0.93 0.04 90);
-  --status-neutral-fg: oklch(0.45 0.10 75);
+  --status-neutral-fg: oklch(0.45 0.1 75);
   --status-negative-bg: oklch(0.93 0.04 25);
   --status-negative-fg: oklch(0.48 0.14 25);
   --chart-1: oklch(0.55 0.22 25);
@@ -61,8 +61,14 @@
   --math-color: oklch(0.24 0.01 25);
   --math-display-color: oklch(0.28 0.01 25);
   --math-display-shadow: 0 1px 0 oklch(1 0 0 / 0.6);
-  --font-math: "STIX Two Math", "Cambria Math", "Latin Modern Math", "STIX Two Text", "Times New Roman", "Georgia", serif;
+  --font-math:
+    "STIX Two Math", "Cambria Math", "Latin Modern Math", "STIX Two Text", "Times New Roman",
+    "Georgia", serif;
   --font-math-text: "STIX Two Text", "Cambria", "Times New Roman", "Georgia", serif;
+  /* 正文栏宽度：ArticleContent.astro 的标题/正文/页脚/图片都用它，
+     桌面左侧 TOC 栏的可用空间也由它推导（50vw - var(--content-width)/2 - 1.5rem 页边）。
+     改这一个值就行，但变宽会挤压 TOC 栏且英文行长会变长 */
+  --content-width: 58rem;
 }
 
 .dark {
@@ -81,12 +87,12 @@
   --muted: oklch(0.26 0.015 250);
   --muted-foreground: oklch(0.67 0.012 250);
   --content-secondary: oklch(0.78 0.012 250);
-  --accent: oklch(0.62 0.20 25);
+  --accent: oklch(0.62 0.2 25);
   --accent-foreground: oklch(0.12 0 0);
   --destructive: oklch(0.396 0.141 25.723);
   --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(0.30 0.015 250);
-  --input: oklch(0.30 0.015 250);
+  --border: oklch(0.3 0.015 250);
+  --input: oklch(0.3 0.015 250);
   --ring: oklch(0.65 0.22 25);
   --status-positive-bg: oklch(0.32 0.06 155 / 0.35);
   --status-positive-fg: oklch(0.72 0.14 155);
@@ -102,10 +108,10 @@
   --sidebar: oklch(0.19 0.015 250);
   --sidebar-foreground: oklch(0.93 0 0);
   --sidebar-primary: oklch(0.65 0.22 25);
-  --sidebar-primary-foreground: oklch(0.90 0 0);
+  --sidebar-primary-foreground: oklch(0.9 0 0);
   --sidebar-accent: oklch(0.26 0.015 250);
   --sidebar-accent-foreground: oklch(0.93 0 0);
-  --sidebar-border: oklch(0.30 0.015 250);
+  --sidebar-border: oklch(0.3 0.015 250);
   --sidebar-ring: oklch(0.65 0.22 25);
   --admonitions-color-tip: oklch(0.7 0.18 180);
   --admonitions-color-note: oklch(0.7 0.18 250);
@@ -113,19 +119,23 @@
   --admonitions-color-warning: oklch(0.75 0.2 70);
   --admonitions-color-caution: oklch(0.7 0.22 25);
   /* Code block colors - dark mode */
-  --codeblock-bg: oklch(0.20 0.015 250);
+  --codeblock-bg: oklch(0.2 0.015 250);
   --codeblock-topbar-bg: oklch(0.24 0.015 250);
-  --math-color: oklch(0.90 0.008 250);
+  --math-color: oklch(0.9 0.008 250);
   --math-display-color: oklch(0.94 0.008 250);
   --math-display-shadow: 0 1px 0 oklch(0.08 0 0 / 0.18);
 }
 
 @theme inline {
-  --font-sans: "Inter", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-  --font-display-sans: "HarmonyOS Sans SC", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
-  --font-serif: "Noto Serif SC", "Source Han Serif SC", "Playfair Display", "Georgia", serif;
-  --font-serif-cn: "Noto Serif SC", "Source Han Serif SC", "Georgia", serif;
-  --font-display-serif: "Playfair Display", "Georgia", serif;
+  /* 拉丁优先 Recursive（BaseLayout 从 Google Fonts 加载的可变字体：wght 300-1000 + slnt 轴），
+     中文仍是 Noto Sans SC / Noto Serif SC。拉丁在前、中文在后：Recursive 的 unicode-range 只有
+     latin/latin-ext/cyrillic/vietnamese，不含 CJK 与全角标点（U+3000-303F / U+FF00-FFEF），
+     所以中文和中文标点自动落到后面的中文族。两族都是可变字体，450/500/600/700 都真实生效。
+     等宽不动（仍由 Geist Mono 负责），所以目录树枝与字符进度条依赖的 └ ░ ▓ 照旧 */
+  --font-sans: "Recursive", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-display-sans:
+    "Recursive", "HarmonyOS Sans SC", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-serif: "Recursive", "Noto Serif SC", "Source Han Serif SC", "Georgia", serif;
   /* Geist Mono 由 BaseLayout 从 Google Fonts 加载；它带有 └ ░ ▓ 等制表/阴影字形且同为 0.6em 宽，
      目录树枝和字符进度条依赖这一点。兜底的系统等宽字体同样具备这些字形 */
   --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
@@ -185,7 +195,6 @@
   /* 衬线字体在 macOS 上需要 subpixel 抗锯齿才显厚实，
      Tailwind 默认的 antialiased（灰度）会让 Noto Serif SC 之类的衬线笔画发虚 */
   .font-serif,
-  .font-serif-cn,
   [class*="font-serif"] {
     -webkit-font-smoothing: subpixel-antialiased;
     -moz-osx-font-smoothing: auto;
@@ -198,7 +207,6 @@
   }
   /* 暗色模式下衬线也要保留 antialiased（暗背景上 subpixel 的彩边会很明显） */
   .dark .font-serif,
-  .dark .font-serif-cn,
   .dark [class*="font-serif"] {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -207,7 +215,8 @@
 
 body.font-profile-interface,
 body.font-profile-interface .font-sans {
-  font-family: "HarmonyOS Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  font-family:
+    "Recursive", "HarmonyOS Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
 }
 
 /* Custom smooth scrolling (avoid hash navigation animation) */
@@ -419,8 +428,13 @@ a.card-github.fetch-waiting .gc-infobar {
 }
 
 @keyframes gc-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }
 
 /* Header */
@@ -498,8 +512,10 @@ a.card-github:hover .gc-repo {
   opacity: 0.75;
   background-color: var(--foreground);
   transition: opacity 0.2s ease;
-  mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 98 96'><path fill='black' d='M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z'/></svg>") no-repeat center / contain;
-  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 98 96'><path fill='black' d='M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z'/></svg>") no-repeat center / contain;
+  mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 98 96'><path fill='black' d='M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z'/></svg>")
+    no-repeat center / contain;
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 98 96'><path fill='black' d='M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z'/></svg>")
+    no-repeat center / contain;
 }
 
 a.card-github:hover .github-logo {
@@ -606,7 +622,10 @@ a.card-github:hover .github-logo {
   color: var(--muted-foreground);
   cursor: pointer;
   opacity: 0;
-  transition: opacity 0.2s, background 0.2s, color 0.2s;
+  transition:
+    opacity 0.2s,
+    background 0.2s,
+    color 0.2s;
 }
 
 .expressive-code pre:hover .copy-btn {

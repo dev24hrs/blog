@@ -75,7 +75,6 @@ export default function AboutPage() {
                 <li>Neovim</li>
                 <li>AI</li>
               </ul>
-              <p>对世界充满兴趣，也总是心怀戒备。</p>
             </div>
           </section>
         </div>

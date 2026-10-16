@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef, useCallback, useMemo } from "react"
+import { memo, useState, useEffect, useRef, useCallback, useMemo } from "react"
 import { cn } from "@/lib/utils"
 
 interface TocItem {
@@ -67,7 +67,7 @@ const EASE_OUT = "ease-[cubic-bezier(.19,1,.22,1)]"
 
 type TocGroup = { head: TocItem | null; subs: TocItem[] }
 
-export function TableOfContents({ variant = "rail", title }: TableOfContentsProps) {
+function TableOfContentsImpl({ variant = "rail", title }: TableOfContentsProps) {
   const [headings, setHeadings] = useState<TocItem[]>([])
   const [activeId, setActiveId] = useState<string>("")
   const navRef = useRef<HTMLElement | null>(null)
@@ -503,3 +503,18 @@ export function TableOfContents({ variant = "rail", title }: TableOfContentsProp
     </nav>
   )
 }
+
+/**
+ * 这里用 memo 包一层再导出，而不是直接导出函数组件：
+ *
+ * Astro 靠各 renderer 的 `ssr.check()` 判断组件归谁渲染（component.js 里按顺序试到 true 为止）。
+ * `@astrojs/react` 的 check() 用“把组件当普通函数试调一次、看返回值是不是 React 元素”来判定，
+ * 而本组件在服务端 headings 为空 → 提前 return null，于是被判成“不是 React 组件”；
+ * 接着 `@astrojs/mdx` 注册的 astro:jsx renderer 的 check() 也会直接调用组件，
+ * 但这一次在 React 渲染上下文之外，useState 找不到 dispatcher，React 每个请求都打印一遍
+ * "Invalid hook call"（异常被上游 catch 掉，所以只是 dev 日志噪音，页面本身正常）。
+ *
+ * memo 的 $$typeof 是 react.memo：两个 check() 都在调用组件之前就靠 $$typeof 判定完毕，
+ * 越界调用消失，组件归属也不再依赖 Astro 的兜底分支。
+ */
+export const TableOfContents = memo(TableOfContentsImpl)

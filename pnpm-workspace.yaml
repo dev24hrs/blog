@@ -4,3 +4,10 @@ packages:
 allowBuilds:
   esbuild: true
   sharp: true
+
+# pnpm 12 起，`pnpm.overrides` 不再从 package.json 读取，设置统一放在本文件顶层。
+# 上游 hast-util-raw / mdast-util-to-hast 声明的是 `@ungap/structured-clone: ^1.0.0`，
+# 但 lockfile 把传递依赖钉在 1.3.0，而该版本已被上游弃用（"Potential CWE-502 - Update to 1.3.1 or higher"）。
+# 这里统一解析到 1.4.0（仍落在 ^1.0.0 范围内）。
+overrides:
+  '@ungap/structured-clone': '^1.4.0'

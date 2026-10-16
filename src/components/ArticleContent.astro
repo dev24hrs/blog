@@ -23,7 +23,7 @@ const primaryTagHref = primaryTag ? `/?tag=${encodeURIComponent(primaryTag)}#hom
 
 <main class="flex-1 pt-24 pb-4" data-pagefind-body>
   <div class="px-6">
-    <div class="max-w-[44rem] mx-auto">
+    <div class="max-w-[var(--content-width)] mx-auto">
     <a
       href="/#home-main"
       class="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors mb-8 group"
@@ -103,7 +103,7 @@ const primaryTagHref = primaryTag ? `/?tag=${encodeURIComponent(primaryTag)}#hom
 
     <ReadingProgressLine client:media="(max-width: 1279px)" />
 
-    <div class="xl:hidden max-w-[44rem] mx-auto mb-4">
+    <div class="xl:hidden max-w-[var(--content-width)] mx-auto mb-4">
       <details open class="group border border-border/60 bg-card/60 rounded-xl">
         <summary class="list-none cursor-pointer px-4 py-3 flex items-center justify-between text-sm text-foreground">
           <span class="inline-flex items-center gap-2">
@@ -118,20 +118,21 @@ const primaryTagHref = primaryTag ? `/?tag=${encodeURIComponent(primaryTag)}#hom
       </details>
     </div>
 
-    <div class="relative max-w-[44rem] mx-auto">
-      <article class:list={[articleProseClass, "max-w-[44rem] mx-auto"]}>
+    <div class="relative max-w-[var(--content-width)] mx-auto">
+      <article class:list={[articleProseClass, "max-w-[var(--content-width)] mx-auto"]}>
         {hasSlot ? <slot /> : Content ? <Content /> : null}
       </article>
 
-      <!-- 左侧栏：宽度取 18rem 与「正文左侧剩余空间 − 1.5rem 页边」的较小者，窄屏也不会贴到视口边缘 -->
-      <aside class="hidden xl:block absolute top-0 right-full pr-10 w-[min(18rem,calc(50vw-22rem-1.5rem))] h-full">
+      <!-- 左侧栏：宽度取 18rem 与「正文左侧剩余空间 − 1.5rem 页边」的较小者，窄屏也不会贴到视口边缘。
+           正文宽度来自 --content-width，所以这里除以 2，改宽度时不用动这里 -->
+      <aside class="hidden xl:block absolute top-0 right-full pr-10 w-[min(18rem,calc(50vw-var(--content-width)/2-1.5rem))] h-full">
         <div class="sticky top-24">
           <TableOfContents variant="rail" title={data.title} client:media="(min-width: 1280px)" />
         </div>
       </aside>
     </div>
 
-    <footer class="mt-6 pt-4 border-t border-border max-w-[44rem] mx-auto">
+    <footer class="mt-6 pt-4 border-t border-border max-w-[var(--content-width)] mx-auto">
       <div class="flex items-center gap-3 mb-8">
         <span class="text-sm text-muted-foreground">标签：</span>
         <div class="flex flex-wrap gap-2">

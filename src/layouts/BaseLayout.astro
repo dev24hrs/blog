@@ -92,11 +92,13 @@ const resolvedTwitterDescription = twitterDescription || description
         />
       </>
     ) : null}
+    {/* 拉丁字体 Recursive 由 global.css 的 --font-* 栈最前顺位使用（可变字体：wght 300-1000 + slnt 斜体轴）
+        Recursive 不含 CJK 与全角标点，中文仍由 Noto Sans/Serif SC 承担 */}
     <link
       rel="stylesheet"
       href={useHarmonySans
-        ? "https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400..600&family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Noto+Serif+SC:wght@400..900&display=swap"
-        : "https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400..600&family=Inter:wght@400..700&family=Noto+Sans+SC:wght@400..700&family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Noto+Serif+SC:wght@400..900&display=swap"}
+        ? "https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400..600&family=Recursive:slnt,wght@-15..0,300..1000&family=Noto+Serif+SC:wght@400..900&display=swap"
+        : "https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400..600&family=Recursive:slnt,wght@-15..0,300..1000&family=Noto+Sans+SC:wght@400..700&family=Noto+Serif+SC:wght@400..900&display=swap"}
     />
     <link rel="icon" href="/icon-light-32x32.png" media="(prefers-color-scheme: light)" />
     <link rel="icon" href="/icon-dark-32x32.png" media="(prefers-color-scheme: dark)" />
