@@ -100,7 +100,8 @@ pnpm new a/b/my-post.md
 
 ## 部署
 
-托管在 Cloudflare。安全响应头与静态资源缓存策略见 `public/_headers`（构建时随静态资源复制到 `dist/_headers`）。
+托管在 Cloudflare。
+具体参考 [deploy](https://github.com/dev24hrs/blog/blob/main/src/content/posts/blog-welcome.md)
 
 ## 许可
 

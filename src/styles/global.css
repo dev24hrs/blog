@@ -199,6 +199,13 @@
     -webkit-font-smoothing: subpixel-antialiased;
     -moz-osx-font-smoothing: auto;
   }
+  /* 行内代码与代码块里的等宽小字同理：亮色下灰度抗锯齿会发虚，改用 subpixel。
+     代码块被 expressive-code 的 `all: unset`（优先级 0,1,2）接管，需要 0,2,1 的选择器才能压过 */
+  .prose code,
+  .prose .expressive-code code {
+    -webkit-font-smoothing: subpixel-antialiased;
+    -moz-osx-font-smoothing: auto;
+  }
   /* 深色模式下增加字重，补偿光晕效应 */
   .dark body {
     font-weight: 450;
@@ -208,6 +215,12 @@
   /* 暗色模式下衬线也要保留 antialiased（暗背景上 subpixel 的彩边会很明显） */
   .dark .font-serif,
   .dark [class*="font-serif"] {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  /* 暗底上 subpixel 的彩边很明显，代码保持灰度 */
+  .dark .prose code,
+  .dark .prose .expressive-code code {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }

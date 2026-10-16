@@ -10,7 +10,7 @@ export const articleProseClass = [
   "prose-a:text-primary prose-a:no-underline prose-a:hover:underline",
   "prose-blockquote:border-l-primary prose-blockquote:border-l-2 prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-[16.5px] prose-blockquote:leading-[1.85] prose-blockquote:text-content-secondary prose-blockquote:font-normal",
   "prose-strong:text-foreground prose-strong:font-semibold",
-  "prose-code:text-primary prose-code:bg-secondary prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:before:content-none prose-code:after:content-none",
+  "prose-code:text-primary prose-code:text-[1em] prose-code:before:content-none prose-code:after:content-none",
   "prose-pre:bg-secondary prose-pre:border prose-pre:border-border",
   "prose-ol:text-[16.5px] prose-ul:text-[16.5px] prose-ol:text-foreground/90 prose-ul:text-foreground/90 dark:prose-ol:text-foreground dark:prose-ul:text-foreground prose-ol:my-5 prose-ul:my-5",
   "prose-li:marker:text-primary prose-li:my-1.5 prose-li:leading-[1.85]",
