@@ -2,7 +2,7 @@
 
 时歌的个人博客源码 —— [www.lapis.cafe](https://www.lapis.cafe)
 
-一个基于 Astro 的静态博客，只保留常规的文章系统：Markdown/MDX 写作、分类与标签、分页、RSS、站内搜索、时间线归档。
+一个基于 Astro 的静态博客，只保留常规的文章系统：Markdown/MDX 写作、分类与标签、分页、站内搜索、时间线归档。
 
 ---
 
@@ -10,12 +10,11 @@
 
 | 层 | 选型 |
 |---|---|
-| 框架 | [Astro](https://astro.build) 5（`output: "static"` 纯静态） |
+| 框架 | [Astro](https://astro.build) 7（`output: "static"` 纯静态） |
 | 交互组件 | React 19（islands）+ Radix UI + Tailwind CSS 4 |
 | 代码块 | Expressive Code（行号、折叠、语言徽章、自定义复制按钮） |
 | 数学公式 | remark-math + KaTeX |
 | 站内搜索 | Pagefind（构建时索引） |
-| 页面切换 | Swup |
 | 部署 | Cloudflare |
 
 包管理器是 **pnpm**。
@@ -48,7 +47,7 @@ src/
 ├── data/           站点配置：个人信息、免责声明
 ├── styles/         全局 CSS
 ├── plugins/        自定义 remark / rehype / Expressive Code 插件
-├── lib/ hooks/     支撑逻辑
+├── lib/            支撑逻辑
 public/             原样拷贝到产物根目录的静态资源
 ```
 

@@ -4,15 +4,4 @@ dist
 *.log
 .env
 .wrangler
-
-AGENTS.md
-TODO.md
-Design/scripts/__pycache__/
-scripts/__pycache__/
-.claude/
-CLAUDE.md
-Design/
 .DS_Store
-.agents/
-.opencode/
-.dev.vars
