@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
+    "new": "node scripts/new-post.mjs",
     "build": "astro build && pagefind --site dist",
     "preview": "astro preview",
     "check": "astro check"

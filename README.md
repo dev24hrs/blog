@@ -49,6 +49,8 @@ src/
 ├── plugins/        自定义 remark / rehype / Expressive Code 插件
 ├── lib/            支撑逻辑
 public/             原样拷贝到产物根目录的静态资源
+scripts/            仓库脚本（new-post.mjs）
+templates/          文章模板（post.md，被 pnpm new 读取，不会被当成文章）
 ```
 
 ## 写作
@@ -72,6 +74,14 @@ pinned: false              # 置顶
 draft: false               # 草稿不会被构建
 ---
 ```
+
+### 新增文章
+
+```bash
+pnpm new a/b/my-post.md
+```
+
+`a/b/` 不存在会自动创建；文件名即 URL（`/posts/a/b/my-post/`），`published` 自动填当天，标题由文件名反推后自己改。模板在 `templates/post.md`，字段说明写在模板注释里。目标文件已存在时脚本报错退出，不会覆盖。
 
 ## 自定义
 
