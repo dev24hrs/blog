@@ -1,7 +1,7 @@
 ---
 title: 博客｜序
 published: 2026-10-16
-description: "感谢 [lapis.cafe](https://www.lapis.cafe) . 基于其,保留常规的文章系统"
+description: "Astro 静态博客,托管在 Clouldflare"
 image: ""
 tags: [setup]
 category: 博客
@@ -29,8 +29,8 @@ pinned: true
 
 | 项        | 值                                                                                 | 来源                     |
 | --------- | ---------------------------------------------------------------------------------- | ------------------------ |
-| 域名      | `xxx.top`，托管在 Cloudflare（NS：`xx.ns.cloudflare.com` / xx.ns.cloudflare.com`） | Cloudflare Overview      |
-| 规范域名  | `https://www.xxx.top`（apex 301 跳过来）                                           | astro.config.mjs 的 site |
+| 域名      | `xxx.com`,托管在 Cloudflare（NS：`xx.ns.cloudflare.com` / `xx.ns.cloudflare.com`） | Cloudflare Overview      |
+| 规范域名  | `https://www.xxx.com`（apex 301 跳过来）                                           | astro.config.mjs 的 site |
 | 构建      | pnpm build → astro build + pagefind --site dist，产物在 `dist/`                    | package.json             |
 | 部署形态  | Cloudflare Workers 静态资源（不是 Pages）                                          | wrangler.jsonc           |
 | Worker 名 | xxx-blog                                                                           | wrangler.jsonc 的 name   |
@@ -40,8 +40,8 @@ pinned: true
 
 ## 1. Cloudflare 托管域名
 
-- 选择平台购买域名,`腾讯云` / `阿里云`, 记住购买的域名 ,比如 xxx.top
-- Cloudflare → **Add a site** → 输入 `xxx.top` → 选 Free 计划
+- 选择平台购买域名,`腾讯云` / `阿里云`, 记住购买的域名 ,比如 xxx.com
+- Cloudflare → **Add a site** → 输入 `xxx.com` → 选 Free 计划
 - 去**域名购买平台**把 NS 改成 Cloudflare 分配的两个
 - 回 Cloudflare → 域名 → **Overview**，确认状态从 `Pending` 变成 `Active`
 
@@ -53,8 +53,8 @@ pinned: true
 
 ```bash
 # 1) 两个域名都解析到 Cloudflare
-dig +short xxx.top
-dig +short www.xxx.top
+dig +short xxx.com
+dig +short www.xxx.com
 ```
 
 ## 2. 部署 Worker
@@ -107,9 +107,9 @@ Cloudflare -> Dashboard -> Workers & Pages -> Create appliction -> Continue with
 
 Worker → **Settings → Domains & Routes** → **Add** → **Custom domain**，依次添加：
 
-- `www.xxx.top`
+- `www.xxx.com`
 
-- `xxx.top`
+- `xxx.com`
 
 Cloudflare 会自动写出对应记录（`www` 是 CNAME，apex 是 A 记录，proxy 开启、TTL Auto）。加完回 DNS 页面刷新就能看到 **DNS** 记录
 
@@ -117,35 +117,35 @@ Cloudflare 会自动写出对应记录（`www` 是 CNAME，apex 是 A 记录，p
 
 ## 5. 开启 Always Use HTTPS
 
-cloudflare → xxx.top → **SSL/TLS → Edge Certificates → Always Use HTTPS** 打开
+cloudflare → xxx.com → **SSL/TLS → Edge Certificates → Always Use HTTPS** 打开
 
-不开的话，浏览器输入 `xxx.top` 默认走 http，地址栏会显示 `Not secure`（开了之后 http 自动 301 到 https)
+不开的话，浏览器输入 `xxx.com` 默认走 http，地址栏会显示 `Not secure`（开了之后 http 自动 301 到 https)
 
 同时确认 **SSL/TLS → Overview** 的加密模式不是 Off / Flexible，选 `Full`
 
 ## 6. Rules
 
-**astro.config.mjs** 的 site 是 `https://www.xxx.top`，因此 canonical、og:url、sitemap 全部指向 www（可用 `grep -o '<link rel="canonical"[^>]*>' dist/index.html` 自查）。此时若 apex 也能直接打开，就是同一内容两个地址，需要 301 收口。
+**astro.config.mjs** 的 site 是 `https://www.xxx.com`，因此 canonical、og:url、sitemap 全部指向 www（可用 `grep -o '<link rel="canonical"[^>]*>' dist/index.html` 自查）。此时若 apex 也能直接打开，就是同一内容两个地址，需要 301 收口。
 
-Cloudflare → xxx.top → **Rules → Redirect Rules → Create rule**：
+Cloudflare → xxx.com → **Rules → Redirect Rules → Create rule**：
 
-| 字段                  | 值                                  |
-| --------------------- | ----------------------------------- |
-| Rule name             | `apex to www`                       |
-| 匹配方式              | Wildcard pattern                    |
-| Request URL           | `https://xxx.top/*`                 |
-| Target URL            | `https://www.xxx.top/${1}`          |
-| Status code           | `301 - Permanent Redirect`          |
-| Preserve query string | ✅ 勾上（不勾会丢 `?a=1` 这类参数） |
+| 字段                  | 值                               |
+| --------------------- | -------------------------------- |
+| Rule name             | `apex to www`                    |
+| 匹配方式              | Wildcard pattern                 |
+| Request URL           | `https://xxx.com/*`              |
+| Target URL            | `https://www.xxx.com/${1}`       |
+| Status code           | `301 - Permanent Redirect`       |
+| Preserve query string | 勾上（不勾会丢 `?a=1` 这类参数） |
 
 最后点 **Deploy**.
 
-方向**别做反**。如果想让 apex 当规范域名，必须同步把 **astro.config.mjs** 的 site 改成 `https://xxx.top` 并重新构建部署
+方向**别做反**。如果想让 apex 当规范域名，必须同步把 **astro.config.mjs** 的 site 改成 `https://xxx.com` 并重新构建部署
 
 ## 7. SEO 收尾
 
-- **Google Search Console** → 添加资源 `https://www.xxx.top`（推荐 URL 前缀或域名资源）→ 选 **DNS 验证**
-- 提交 sitemap：`https://www.xxx.top/sitemap-index.xml`（由 **@astrojs/sitemap** 构建时生成）
+- **Google Search Console** → 添加资源 `https://www.xxx.com`（推荐 URL 前缀或域名资源）→ 选 **DNS 验证**
+- 提交 sitemap：`https://www.xxx.com/sitemap-index.xml`（由 **@astrojs/sitemap** 构建时生成）
 - Bing Webmaster Tools 用同一份 sitemap,手动在DNS页面add
   - `Type`: CNAME
   - `Name`: 页面给出的值
